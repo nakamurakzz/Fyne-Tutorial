@@ -16,6 +16,28 @@ import (
 
 func main() {
 	myApp := app.New()
+	w := myApp.NewWindow("Binding Struct")
+
+	type Person struct {
+		Name string
+		Age  int
+	}
+
+	p := binding.BindStruct(&Person{
+		Name: "John",
+		Age:  42,
+	})
+
+	name, _ := p.GetItem("Name")
+
+	nameLabel := widget.NewLabelWithData(name.(binding.String))
+	nameEntry := widget.NewEntryWithData(name.(binding.String))
+	w.SetContent(container.NewVBox(nameLabel, nameEntry))
+	w.ShowAndRun()
+}
+
+func main__() {
+	myApp := app.New()
 	w := myApp.NewWindow("Simple")
 
 	str := binding.NewString()
@@ -37,7 +59,9 @@ func main() {
 	label := widget.NewLabelWithData(strTwoWay)
 	entry := widget.NewEntryWithData(strTwoWay)
 
-	data := binding.BindStringList(&[]string{"one", "two", "three"})
+	numberList := &[]string{}
+
+	data := binding.BindStringList(numberList)
 
 	list := widget.NewListWithData(data, func() fyne.CanvasObject {
 		return widget.NewLabel("")
