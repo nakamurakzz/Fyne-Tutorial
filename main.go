@@ -3,13 +3,35 @@ package main
 import (
 	"image/color"
 	"log"
+	"time"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/canvas"
+	"fyne.io/fyne/v2/data/binding"
+	"fyne.io/fyne/v2/widget"
 )
 
 func main() {
+	myApp := app.New()
+	w := myApp.NewWindow("Simple")
+
+	str := binding.NewString()
+	str.Set("Hello World")
+
+	text := widget.NewLabelWithData(str)
+	w.SetContent(text)
+
+	go func() {
+		time.Sleep(5 * time.Second)
+		str.Set("Goodbye") // 5秒後に文字列を変更, refleshは不要
+	}()
+
+	w.Resize(fyne.NewSize(150, 50))
+	w.ShowAndRun()
+}
+
+func main_() {
 	myApp := app.New()
 	myWindow := myApp.NewWindow("Hello")
 	green := color.NRGBA{R: 0, G: 180, B: 0, A: 255}
