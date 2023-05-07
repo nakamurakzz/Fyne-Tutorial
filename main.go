@@ -4,6 +4,7 @@ import (
 	"log"
 	"time"
 
+	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/widget"
 )
@@ -25,7 +26,16 @@ func main() {
 		}
 	}()
 
-	myWindow.ShowAndRun() // 起動
+	myWindow.Resize(fyne.NewSize(300, 300)) // 画面サイズの定義
+
+	// 2つめのウィンドウを作成する
+	// w2 := myApp.NewWindow("Larger")
+	// w2.SetContent(widget.NewLabel("More content"))
+	// w2.Resize(fyne.NewSize(100, 100))
+	// w2.Show()
+
+	myWindow.Show() // 起動
+	myApp.Run()     // 起動
 
 	tidyUp()
 }
