@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"time"
 
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/widget"
@@ -10,7 +11,19 @@ import (
 func main() {
 	myApp := app.New()
 	myWindow := myApp.NewWindow("Hello")
-	myWindow.SetContent(widget.NewLabel("Hello Fyne!"))
+	helloLabel := widget.NewLabel("Hello Fyne!")
+	myWindow.SetContent(helloLabel)
+
+	timeFormatted := time.Now().Format("2006-01-02 15:04:05")
+	helloLabel.SetText(timeFormatted)
+
+	// 画面更新する関数はShowAndRunの前に書く
+	go func() {
+		for range time.Tick(time.Second) {
+			timeFormatted := time.Now().Format("2006-01-02 15:04:05")
+			helloLabel.SetText(timeFormatted)
+		}
+	}()
 
 	myWindow.ShowAndRun() // 起動
 
