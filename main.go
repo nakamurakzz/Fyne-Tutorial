@@ -8,6 +8,7 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/canvas"
+	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/data/binding"
 	"fyne.io/fyne/v2/widget"
 )
@@ -20,7 +21,6 @@ func main() {
 	str.Set("Hello World")
 
 	text := widget.NewLabelWithData(str)
-	w.SetContent(text)
 
 	go func() {
 		time.Sleep(5 * time.Second)
@@ -28,6 +28,16 @@ func main() {
 	}()
 
 	w.Resize(fyne.NewSize(150, 50))
+
+	// TwoWayDataBinding
+	strTwoWay := binding.NewString()
+	strTwoWay.Set("Hi!!")
+
+	w.SetContent(container.NewVBox(
+		text,
+		widget.NewLabelWithData(strTwoWay), // 入力があると自動で更新される
+		widget.NewEntryWithData(strTwoWay),
+	))
 	w.ShowAndRun()
 }
 
