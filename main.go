@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"image/color"
 	"log"
 	"time"
@@ -27,16 +28,34 @@ func main() {
 		str.Set("Goodbye") // 5秒後に文字列を変更, refleshは不要
 	}()
 
-	w.Resize(fyne.NewSize(150, 50))
+	w.Resize(fyne.NewSize(500, 500))
 
 	// TwoWayDataBinding
 	strTwoWay := binding.NewString()
 	strTwoWay.Set("Hi!!")
 
+	label := widget.NewLabelWithData(strTwoWay)
+	entry := widget.NewEntryWithData(strTwoWay)
+
+	data := binding.BindStringList(&[]string{"one", "two", "three"})
+
+	list := widget.NewListWithData(data, func() fyne.CanvasObject {
+		return widget.NewLabel("")
+	}, func(item binding.DataItem, obj fyne.CanvasObject) {
+		obj.(*widget.Label).Bind(item.(binding.String))
+	})
+
+	add := widget.NewButton("Add", func() {
+		val := fmt.Sprint("item ", data.Length()+1)
+		data.Append(val)
+	})
+
 	w.SetContent(container.NewVBox(
 		text,
-		widget.NewLabelWithData(strTwoWay), // 入力があると自動で更新される
-		widget.NewEntryWithData(strTwoWay),
+		label, // 入力があると自動で更新される
+		entry,
+		list,
+		add,
 	))
 	w.ShowAndRun()
 }
